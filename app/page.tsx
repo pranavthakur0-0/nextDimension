@@ -36,12 +36,10 @@ export default function Home() {
     }
     
     // Fetch today's actual schedule to inject into AI greeting
-    const start = new Date();
-    start.setHours(0, 0, 0, 0);
-    const end = new Date();
-    end.setHours(23, 59, 59, 999);
+    const now = new Date();
+    const todayStr = now.toISOString().split('T')[0]; // "YYYY-MM-DD"
 
-    fetch(`/api/calendar/events?start_date=${start.toISOString()}&end_date=${end.toISOString()}`)
+    fetch(`/api/calendar/events?start_date=${todayStr}&end_date=${todayStr}`)
       .then(async (r) => { 
         if (r.status !== 401) {
           setIsAuthenticated(true);

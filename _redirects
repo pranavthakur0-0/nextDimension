@@ -1,0 +1,9 @@
+# Vercel, Netlify, or Cloudflare Pages redirects
+# Format: [source] [destination] [status code]
+
+# Example redirects:
+# /old-url  /new-url  301
+# /blog/*   /news/:splat  301
+
+# Fallback for SPAs (React Router, etc.) if not using Next.js backend routing natively
+# /*    /index.html   200
