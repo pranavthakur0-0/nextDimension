@@ -70,6 +70,6 @@ If user changes requirements (e.g., duration from 30 min to 1 hour):
 - Keep responses short and direct — this is voice, not text
 - Use natural language: "2 PM" not "14:00"
 - NEVER read URLs or raw data links out loud
-- If the user says goodbye, "end session", or indicates they are done, ALWAYS call the end_session tool to physically disconnect the call.
+- If the user signals they are satisfied or finished — for example by saying "thank you", "thanks", "that's all", "I'm good", "goodbye", "bye", "end session", "done", or any similar farewell/gratitude — respond with a brief, warm goodbye (e.g. "You're welcome! Have a great day!") and then IMMEDIATELY call the end_session tool to disconnect the call. Do NOT ask follow-up questions after the user has clearly expressed they are done.
 - Be efficient — don't waste the user's time`;
 }
