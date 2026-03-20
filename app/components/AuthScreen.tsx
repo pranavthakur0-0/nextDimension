@@ -41,6 +41,10 @@ export default function AuthScreen() {
               <div className="auth-stat-value">GPT-4o Realtime</div>
             </div>
           </div>
+
+          <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '8px' }}>
+            By continuing, you agree to our <a href="/privacy" style={{ color: 'var(--text-secondary)', textDecoration: 'underline' }}>Privacy Policy</a>.
+          </div>
         </div>
       </div>
     </div>
