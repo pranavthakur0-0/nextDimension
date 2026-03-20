@@ -1,65 +1,107 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+
+import { useState, useEffect, useCallback } from "react";
+import NavBar from "./components/NavBar";
+import MicButton from "./components/MicButton";
+import LiveText from "./components/LiveText";
+import Transcript from "./components/Transcript";
+import AuthScreen from "./components/AuthScreen";
+import { useWebRTC } from "./hooks/useWebRTC";
 
 export default function Home() {
+  const [authChecked, setAuthChecked] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showTranscript, setShowTranscript] = useState(false);
+  const [todayEvents, setTodayEvents] = useState<any[]>([]);
+
+  // All WebRTC complex logic is now neatly encapsulated
+  const {
+    connectionState,
+    isUserSpeaking,
+    isAssistantSpeaking,
+    messages,
+    liveText,
+    liveRole,
+    volumeLevel,
+    toggleConnection,
+    disconnect,
+  } = useWebRTC(todayEvents);
+
+  // Validate Google Auth on load
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("auth") === "success") {
+      setIsAuthenticated(true);
+      window.history.replaceState({}, "", "/");
+    }
+    
+    // Fetch today's actual schedule to inject into AI greeting
+    const start = new Date();
+    start.setHours(0, 0, 0, 0);
+    const end = new Date();
+    end.setHours(23, 59, 59, 999);
+
+    fetch(`/api/calendar/events?start_date=${start.toISOString()}&end_date=${end.toISOString()}`)
+      .then(async (r) => { 
+        if (r.status !== 401) {
+          setIsAuthenticated(true);
+          try {
+            const data = await r.json();
+            setTodayEvents(Array.isArray(data) ? data : []);
+          } catch {
+            // Empty
+          }
+        } 
+      })
+      .catch(() => {})
+      .finally(() => setAuthChecked(true));
+  }, []);
+
+  const signOut = useCallback(() => {
+    document.cookie = "google_tokens=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    setIsAuthenticated(false);
+    disconnect();
+  }, [disconnect]);
+
+  // Loading state
+  if (!authChecked) {
+    return (
+      <div className="app">
+        <div className="auth-container">
+          <div className="spinner" />
+        </div>
+      </div>
+    );
+  }
+
+  // Not logged in
+  if (!isAuthenticated) {
+    return <AuthScreen />;
+  }
+
+  // App running
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="app">
+      <NavBar isConnected={connectionState === "connected"} onSignOut={signOut} />
+      
+      <main className="main">
+        <MicButton
+          connectionState={connectionState}
+          isUserSpeaking={isUserSpeaking}
+          isAssistantSpeaking={isAssistantSpeaking}
+          volumeLevel={volumeLevel}
+          onToggle={toggleConnection}
+          onDisconnect={disconnect}
         />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+        
+        <LiveText text={liveText} role={liveRole} />
+        
+        <Transcript
+          messages={messages}
+          isConnected={connectionState === "connected"}
+          isOpen={showTranscript}
+          onToggle={() => setShowTranscript((v) => !v)}
+        />
       </main>
     </div>
   );
