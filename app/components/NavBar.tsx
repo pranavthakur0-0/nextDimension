@@ -11,7 +11,7 @@ export default function NavBar({ isConnected, onSignOut }: NavBarProps) {
       <div className="nav-left">
         <div className="nav-logo">
           <IconCalendar size={16} />
-          <span className="nav-logo-text">Smart Scheduler</span>
+          <span className="nav-logo-text">Scheduler AI</span>
         </div>
         <div className="nav-sep" />
         <span className="nav-ctx">Meeting Assistant</span>

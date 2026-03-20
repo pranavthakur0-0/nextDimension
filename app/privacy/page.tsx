@@ -4,7 +4,7 @@ export default function PrivacyPolicy() {
       <nav className="nav">
         <div className="nav-left">
           <div className="nav-logo">
-            <span className="nav-logo-text" style={{ fontSize: '16px' }}>NextDimension AI</span>
+            <span className="nav-logo-text" style={{ fontSize: '16px' }}>Scheduler AI</span>
           </div>
         </div>
       </nav>
@@ -19,7 +19,7 @@ export default function PrivacyPolicy() {
           <div>
             <h2 style={{ fontSize: "18px", marginBottom: "12px", color: "var(--text-primary)", fontWeight: "600" }}>1. Information We Collect</h2>
             <p style={{ color: "var(--text-secondary)", lineHeight: "1.7", fontSize: "15px" }}>
-              NextDimension AI ("Smart Scheduler") requests access to your Google Calendar to provide voice-based scheduling automation. We strictly collect only the necessary information to function:
+              Scheduler AI requests access to your Google Calendar to provide voice-based scheduling automation. We strictly collect only the necessary information to function:
               <br /><br />
               • <strong>Calendar Data:</strong> We read your calendar events solely to determine your availability when you request to schedule a meeting.<br />
               • <strong>Event Creation:</strong> We use your calendar permissions to create new scheduled meeting events only when explicitly commanded and confirmed by you via voice.

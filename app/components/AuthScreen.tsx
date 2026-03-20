@@ -7,7 +7,7 @@ export default function AuthScreen() {
       <nav className="nav" style={{ borderBottom: 'none', background: 'transparent' }}>
         <div className="nav-left">
           <div className="nav-logo">
-            <span className="nav-logo-text" style={{ fontSize: '16px' }}>NextDimension AI</span>
+            <span className="nav-logo-text" style={{ fontSize: '16px' }}>Scheduler AI</span>
           </div>
         </div>
       </nav>
