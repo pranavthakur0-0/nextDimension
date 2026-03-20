@@ -133,6 +133,7 @@ html, body {
     8px 8px 16px rgba(0,0,0,0.6), 
     -4px -4px 12px rgba(255,255,255,0.01);
   color: #fff;
+  cursor: pointer;
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   animation: pop-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -239,6 +240,7 @@ html, body {
   background: #000;
   display: flex; align-items: center; justify-content: center;
   overflow: hidden;
+  cursor: pointer;
   box-shadow: 0 0 30px rgba(122, 0, 255, 0.15), inset 0 0 20px rgba(255,255,255,0.05);
   transition: transform 0.1s ease-out, box-shadow 0.4s ease;
   mask-image: radial-gradient(white, black);
